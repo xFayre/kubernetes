@@ -3,7 +3,7 @@ SECONDS=0
 
 source environment.conf
 
-for SERVER in dns loadbalancer master-{1..3} worker-{1..3}; do
+for SERVER in dns loadbalancer master-{1..1} worker-{1..1}; do
   CLOUD_INIT_TEMPLATE_NAME=$(awk -F '-' '{ print $1 }' <<< "${SERVER}")
   CLOUD_INIT_FILE="cloud-init/${SERVER}.yaml"
 
