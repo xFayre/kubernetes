@@ -1,7 +1,7 @@
 #!/bin/bash
 SECONDS=0
 
-SERVERS=$(multipass list | grep -E "^dns|^loadbalancer|^master|^worker" | awk '{ print $1 }')
+SERVERS=$(./list.sh | awk '{ print $1 }')
 
 for SERVER in ${SERVERS}; do
   echo ${SERVER}
