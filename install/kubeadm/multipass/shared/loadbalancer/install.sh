@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
 
-cp "shared/loadbalancer/haproxy.cfg" "/etc/haproxy/haproxy.cfg"
+cp "/shared/loadbalancer/haproxy.cfg" "/etc/haproxy/haproxy.cfg"
 
 service haproxy restart
