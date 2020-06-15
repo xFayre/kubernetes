@@ -8,6 +8,7 @@ disks/
 .running
 **/multipass/shared/dns/forward.*
 **/multipass/shared/dns/reverse.*
-**/multipass/shared/dns/named.conf.local
-**/multipass/shared/dns/named.conf.options
+**/multipass/shared/dns/named.conf.*
 **/multipass/shared/dns/servers.conf
+**/multipass/shared/dns/setup-resolv.conf-all.sh
+**/multipass/shared/update-system-config-all.sh
