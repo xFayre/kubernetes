@@ -11,4 +11,5 @@ disks/
 **/multipass/shared/dns/named.conf.*
 **/multipass/shared/dns/servers.conf
 **/multipass/shared/dns/setup-resolv.conf-all.sh
+**/multipass/shared/loadbalancer/haproxy.cfg
 **/multipass/shared/update-system-config-all.sh
