@@ -6,6 +6,7 @@ disks/
 .vagrant/machines/master-1/virtualbox/vagrant_cwd
 .status
 .running
+**/multipass/cloud-init/**
 **/multipass/shared/dns/forward.*
 **/multipass/shared/dns/reverse.*
 **/multipass/shared/dns/named.conf.*
