@@ -1,12 +1,8 @@
----
 network:
   ethernets:
     ens4:
-      dhcp4: true
-      match:
-        macaddress: 52:54:00:8f:0a:f8
-      set-name: ens4
+      dhcp4-overrides:
+        route-metric: 10
       routes:
         - to: 10.96.0.0/16
-          via: ${IPV4_ADDRESS}
-  version: 2
+          via: ${CLOUD_INIT_IP}

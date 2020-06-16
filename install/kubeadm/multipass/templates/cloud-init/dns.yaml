@@ -7,8 +7,3 @@ packages:
  - bind9utils
  - bind9-doc
  - dnsutils
-
-routes:
-  - to: 10.96.0.0/16
-    via: 127.0.0.1
-    metric: 3

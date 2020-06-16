@@ -7,6 +7,7 @@ disks/
 .status
 .running
 **/multipass/cloud-init/**
+**/multipass/shared/network/*.yaml
 **/multipass/shared/dns/forward.*
 **/multipass/shared/dns/reverse.*
 **/multipass/shared/dns/named.conf.*
