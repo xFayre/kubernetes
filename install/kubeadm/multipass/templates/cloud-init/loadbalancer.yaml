@@ -3,4 +3,4 @@ hostname: ${SERVER_HOST_NAME}
 fqdn: ${SERVER_HOST_NAME}.${DOMAIN_NAME}
 
 packages:
-- haproxy
+  - haproxy
