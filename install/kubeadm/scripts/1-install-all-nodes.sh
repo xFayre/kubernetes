@@ -32,7 +32,7 @@ if grep --quiet "master" <<< $(hostname --short); then
   sudo apt-get install --yes \
     kubeadm="${KUBERNETES_VERSION}" \
     kubelet="${KUBERNETES_VERSION}" \
-    kubectl="${KUBERNETES_VERSION}" && \
+    kubectl="${KUBERNETES_VERSION}" | grep --invert-match --extended-regexp "^Hit|^Get" && \
   sudo apt-mark hold \
     kubelet \
     kubeadm \
@@ -40,7 +40,7 @@ if grep --quiet "master" <<< $(hostname --short); then
 else
   sudo apt-get install --yes \
     kubeadm="${KUBERNETES_VERSION}" \
-    kubelet="${KUBERNETES_VERSION}" && \
+    kubelet="${KUBERNETES_VERSION}" | grep --invert-match --extended-regexp "^Hit|^Get" && \
   sudo apt-mark hold \
     kubelet \
     kubeadm

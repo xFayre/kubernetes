@@ -1,10 +1,10 @@
 # The parameters below are getting from the first Contol Plane Config
 NODE_NAME=$(hostname --short) && \
-sudo kubeadm join lb.example.com:6443 \
+sudo kubeadm join lb:6443 \
   --node-name "${NODE_NAME}" \
-  --token 7z397n.ib2u6h3z6amo5hea \
-  --discovery-token-ca-cert-hash sha256:faa0db004bc44bf81b956f1d304bb0beb640616aa1d8417d05d5ab456c1769ed \
-  --v 1
+  --token jipsfp.1cdec9s7y0tm09ee \
+  --discovery-token-ca-cert-hash sha256:206b8bef802ce7f7accb4fd5a8e8e79762360e7cdd47a2b8da7f7045f5ac5c72 \
+  --v 10
 
 # Optional
 sudo crictl pull nginx:1.19 && \
