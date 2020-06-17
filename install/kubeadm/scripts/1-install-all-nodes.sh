@@ -1,5 +1,5 @@
 # Test Connectivity to Loadbalancer
-nc -d lb 6443 && echo "OK" || echo "FAIL"
+nc -d lb.example.com 6443 && echo "OK" || echo "FAIL"
 
 # Check if there are a route that will be used by Services
 route -n | grep --quiet "10.96.0.0" && echo "OK" || echo "FAIL"

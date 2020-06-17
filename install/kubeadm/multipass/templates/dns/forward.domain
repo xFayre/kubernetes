@@ -20,3 +20,4 @@ loadbalancer IN       CNAME   lb
 masters      IN       CNAME   lb
 k8s          IN       CNAME   lb
 cluster      IN       CNAME   lb
+*.apps       IN       CNAME   lb

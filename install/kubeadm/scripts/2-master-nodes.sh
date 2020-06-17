@@ -13,7 +13,7 @@ KUBERNETES_VERSION="$(sudo apt-cache madison kubeadm | grep ${KUBERNETES_DESIRED
 KUBERNETES_BASE_VERSION="${KUBERNETES_VERSION%-*}" && \
 LOCAL_IP_ADDRESS=$(grep $(hostname --short) /etc/hosts | awk '{ print $1 }') && \
 LOAD_BALANCER_PORT='6443' && \
-LOAD_BALANCER_NAME='lb' && \
+LOAD_BALANCER_NAME='lb.example.com' && \
 CONTROL_PLANE_ENDPOINT="${LOAD_BALANCER_NAME}:${LOAD_BALANCER_PORT}" && \
 echo "" && \
 echo "LOCAL_IP_ADDRESS...........: ${LOCAL_IP_ADDRESS}" && \
