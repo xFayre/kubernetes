@@ -4,6 +4,8 @@ SECONDS=0
 # Load Environment Variables
 source environment.conf
 
+mkdir -p cloud-init
+
 # List Servers that need to be created
 SERVERS=$(echo dns loadbalancer master-{1..1} worker-{1..1})
 
