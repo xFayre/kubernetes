@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# As mentioned here:
+# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+
 # Disable SWAP
 swapoff -a
 

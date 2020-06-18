@@ -55,10 +55,10 @@ echo "" && \
 echo "NODE_NAME..................: ${NODE_NAME}" && \
 echo "LOCAL_IP_ADDRESS...........: ${LOCAL_IP_ADDRESS}" && \
 sudo kubeadm join lb:6443 \
-  --v 3 \
+  --v 1 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token ft16yn.ogrktrhdj1zz1zcl \
-  --discovery-token-ca-cert-hash sha256:66431463104a274ab585abfd4aacecc2c5eca233a32de5be80580ca51bc3b0b1 \
-  --certificate-key ae8ec32c61122fab7c554745a85cfeea00b1a318dbc55d39397e4cc3b7b8ce6b
+  --token 76np2a.hpw6m6ea5vx4jn16 \
+  --discovery-token-ca-cert-hash sha256:d4de6c3ef2fd363abf95ed09d541d45cc7c2d8b1e0d9227ab3a95333bb3ff422 \
+  --certificate-key 1a478dc49f4e39ec67222075566167be3cc64bf9563e50b9843f78fc34e115d4
