@@ -8,7 +8,7 @@ EOF
 source ~/.bashrc
 
 # WARNING: We should run these commands ONLY on master-1
-KUBERNETES_DESIRED_VERSION='1.18' && \
+KUBERNETES_DESIRED_VERSION='1.18.3' && \
 KUBERNETES_VERSION="$(sudo apt-cache madison kubeadm | grep ${KUBERNETES_DESIRED_VERSION} | head -1 | awk '{ print $3 }')" && \
 KUBERNETES_BASE_VERSION="${KUBERNETES_VERSION%-*}" && \
 LOCAL_IP_ADDRESS=$(grep $(hostname --short) /etc/hosts | awk '{ print $1 }') && \
@@ -26,7 +26,7 @@ SECONDS=0 && \
 KUBEADM_LOG_FILE="${HOME}/kubeadm-init.log" && \
 NODE_NAME=$(hostname --short) && \
 sudo kubeadm init \
-  --v 3 \
+  --v 9 \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
   --kubernetes-version "${KUBERNETES_BASE_VERSION}" \
@@ -59,6 +59,6 @@ sudo kubeadm join lb:6443 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token 76np2a.hpw6m6ea5vx4jn16 \
-  --discovery-token-ca-cert-hash sha256:d4de6c3ef2fd363abf95ed09d541d45cc7c2d8b1e0d9227ab3a95333bb3ff422 \
-  --certificate-key 1a478dc49f4e39ec67222075566167be3cc64bf9563e50b9843f78fc34e115d4
+  --token 1an7eo.rthtny3q7f0rix22 \
+  --discovery-token-ca-cert-hash sha256:091bce65bda860b496559974194d59fda055c1f4c64c27aab05d92bcf13211a1 \
+  --certificate-key 60544fead6abc7045379738a1458c6fce2439985ce9438c2e3a604a4797a4eff
