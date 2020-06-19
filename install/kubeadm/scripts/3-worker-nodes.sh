@@ -2,8 +2,8 @@
 NODE_NAME=$(hostname --short) && \
 sudo kubeadm join lb:6443 \
   --node-name "${NODE_NAME}" \
-  --token 9ak20k.msflotzrn8zm8lhd \
-  --discovery-token-ca-cert-hash sha256:eadbe47063854be4d1499f1de1e3627d97b17c922682f51ff78fa57f8815607a \
+  --token i83kzr.t5cm3a6f0g51lkbc \
+  --discovery-token-ca-cert-hash sha256:e7644582f143e73f3c60786f779ee82d053ccde99c2b6abfd864ce6c281e70f3 \
   --v 3
 
 # Optional
