@@ -4,6 +4,8 @@ cat <<EOF | tee --append ~/.bashrc
 source <(kubectl completion bash)
 alias k=kubectl
 complete -F __start_kubectl k
+
+alias cat='bat -p'
 EOF
 source ~/.bashrc
 
@@ -26,7 +28,7 @@ SECONDS=0 && \
 KUBEADM_LOG_FILE="${HOME}/kubeadm-init.log" && \
 NODE_NAME=$(hostname --short) && \
 sudo kubeadm init \
-  --v 9 \
+  --v 3 \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
   --kubernetes-version "${KUBERNETES_BASE_VERSION}" \
@@ -40,7 +42,9 @@ watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'
 # Install CNI Plugin
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#pod-network
 # https://medium.com/google-cloud/understanding-kubernetes-networking-pods-7117dd28727
-kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+# 
+# kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+kubectl apply -f weave-net-cni-plugin.yaml
 
 # Retrieve token information from log file
 KUBEADM_LOG_FILE="${HOME}/kubeadm-init.log" && \
@@ -59,6 +63,6 @@ sudo kubeadm join lb:6443 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token z542h1.b7khrpvr0vah320o \
-  --discovery-token-ca-cert-hash sha256:079edf9fd8338e7dff19644e184b70da7493973653499c1479e37ff44f33add6 \
-  --certificate-key 8fd244dd1df3b04171bf7614fd0a99c2dab19e296ec3db7030fe0d55747e0de7
+  --token 9ak20k.msflotzrn8zm8lhd \
+  --discovery-token-ca-cert-hash sha256:eadbe47063854be4d1499f1de1e3627d97b17c922682f51ff78fa57f8815607a \
+  --certificate-key c7312407ddf5420c85b6a7e3a6814514c09175d75888b0e481311c893da46cde

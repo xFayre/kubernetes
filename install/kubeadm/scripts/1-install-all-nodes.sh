@@ -57,14 +57,19 @@ sudo crictl images
 # Preloading Container Images
 #   masters =~ 1 minute 30 seconds
 #   workers < 1 minute
+WEAVE_NET_CNI_PLUGIN_FILE="weave-net-cni-plugin.yaml" && \
+wget \
+  "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" \
+  --quiet \
+  --output-document "${WEAVE_NET_CNI_PLUGIN_FILE}"
+
 SECONDS=0 && \
 if grep --quiet "master" <<< $(hostname --short); then
   sudo kubeadm config images pull --kubernetes-version "${KUBERNETES_BASE_VERSION}"
 else
   sudo crictl pull "k8s.gcr.io/kube-proxy:v${KUBERNETES_BASE_VERSION}"
 fi
-sudo crictl pull docker.io/weaveworks/weave-kube:2.6.4
-sudo crictl pull docker.io/weaveworks/weave-npc:2.6.4
+grep "image:" "${WEAVE_NET_CNI_PLUGIN_FILE}" | awk -F "'" '{ print "sudo crictl pull " $2 }' | sh
 printf '%d hour %d minute %d seconds\n' $((${SECONDS}/3600)) $((${SECONDS}%3600/60)) $((${SECONDS}%60))
 
 # List Images
