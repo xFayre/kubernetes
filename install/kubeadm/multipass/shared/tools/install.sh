@@ -21,7 +21,7 @@ sudo snap install yq
 
 yq --version
 
-echo "alias yq='yq -C -P'" >> ~/.bashrc && source ~/.bashrc
+echo "alias yq='yq -C -P'" >> /home/ubuntu/.bashrc
 
 # ytop
 VERSION="0.6.2"
