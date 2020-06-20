@@ -1,11 +1,12 @@
 #!/bin/bash
-FORWARD_FILE="forward.example.com"
-REVERSE_FILE="reverse.example.com"
+DOMAIN=$1
+FORWARD_FILE="forward.${DOMAIN}"
+REVERSE_FILE="reverse.${DOMAIN}"
 
 cp /shared/dns/named.conf.options /etc/bind/
 cp /shared/dns/named.conf.local /etc/bind/
-cp /shared/dns/"forward.example.com" /etc/bind/
-cp /shared/dns/"reverse.example.com" /etc/bind/
+cp /shared/dns/"${FORWARD_FILE}" /etc/bind/
+cp /shared/dns/"${REVERSE_FILE}" /etc/bind/
 
 systemctl restart bind9
 systemctl enable bind9
@@ -13,5 +14,5 @@ systemctl enable bind9
 ufw allow 53
 
 named-checkconf /etc/bind/named.conf.local
-named-checkzone example.com /etc/bind/"forward.example.com"
-named-checkzone example.com /etc/bind/"reverse.example.com"
+named-checkzone example.com /etc/bind/"${FORWARD_FILE}"
+named-checkzone example.com /etc/bind/"${REVERSE_FILE}"
