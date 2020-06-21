@@ -46,6 +46,8 @@ watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'
 # kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 kubectl apply -f weave-net-cni-plugin.yaml
 
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')&env.IPALLOC_RANGE=172.16.0.0/16"
+
 # Retrieve token information from log file
 KUBEADM_LOG_FILE="${HOME}/kubeadm-init.log" && \
 grep "\-\-certificate-key" "${KUBEADM_LOG_FILE}" --before 2 | grep \
@@ -63,6 +65,6 @@ sudo kubeadm join lb:6443 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token i83kzr.t5cm3a6f0g51lkbc \
-  --discovery-token-ca-cert-hash sha256:e7644582f143e73f3c60786f779ee82d053ccde99c2b6abfd864ce6c281e70f3 \
-  --certificate-key 47d4b40676817ef38e8fd07657d823f3556fa39ef95fbac9f5b44e31fb81273f
+  --token lau9ly.7tp7yxf04lfvlwpl \
+  --discovery-token-ca-cert-hash sha256:c907c20607a85d90da7172e8c4d97ab1d9d0bd2975dedf7c3d6a610e408a4ee9 \
+  --certificate-key 939f0fe7d5d91ae147b1223821625cea4c98c1c80da64dbad0066c34a08a2d17

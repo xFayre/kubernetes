@@ -58,7 +58,7 @@ sudo crictl images
 #   masters =~ 1 minute 30 seconds
 #   workers < 1 minute
 WEAVE_NET_CNI_PLUGIN_FILE="weave-net-cni-plugin.yaml" && \
-wget "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" --output-document "${WEAVE_NET_CNI_PLUGIN_FILE}"
+wget "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')&env.IPALLOC_RANGE=172.16.0.0/16" --output-document "${WEAVE_NET_CNI_PLUGIN_FILE}"
 
 SECONDS=0 && \
 if grep --quiet "master" <<< $(hostname --short); then
