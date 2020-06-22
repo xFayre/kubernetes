@@ -32,7 +32,7 @@ if grep --quiet "master" <<< $(hostname --short); then
   sudo apt-get install --yes \
     kubeadm="${KUBERNETES_VERSION}" \
     kubelet="${KUBERNETES_VERSION}" \
-    kubectl="${KUBERNETES_VERSION}" | grep --invert-match --extended-regexp "^Hit|^Get" && \
+    kubectl="${KUBERNETES_VERSION}" | grep --invert-match --extended-regexp "^Hit|^Get|^Selecting|^Preparing|^Unpacking" && \
   sudo apt-mark hold \
     kubelet \
     kubeadm \
@@ -40,7 +40,7 @@ if grep --quiet "master" <<< $(hostname --short); then
 else
   sudo apt-get install --yes \
     kubeadm="${KUBERNETES_VERSION}" \
-    kubelet="${KUBERNETES_VERSION}" | grep --invert-match --extended-regexp "^Hit|^Get" && \
+    kubelet="${KUBERNETES_VERSION}" | grep --invert-match --extended-regexp "^Hit|^Get|^Selecting|^Preparing|^Unpacking" && \
   sudo apt-mark hold \
     kubelet \
     kubeadm
@@ -54,12 +54,21 @@ sudo crictl config \
   image-endpoint "${CONTAINERD_SOCK}" && \
 sudo crictl images
 
+# CNI Plugin
+#   CIDR.......: 172.16.0.0/16 (https://community.spiceworks.com/tools/subnet-calc/)
+#   Start......: 172.16.0.1
+#   End........: 172.16.255.254
+#   Hosts......: 65.534
+WEAVE_NET_CNI_PLUGIN_IPALLOCRANGE="172.16.0.0/16" && \
+WEAVE_NET_CNI_PLUGIN_FILE="weave-net-cni-plugin.yaml" && \
+WEAVE_NET_CNI_PLUGIN_URL="https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version 2> /dev/null | base64 | tr -d '\n')&env.IPALLOC_RANGE=${WEAVE_NET_CNI_PLUGIN_IPALLOCRANGE}" && \
+wget "${WEAVE_NET_CNI_PLUGIN_URL}" \
+  --quiet \
+  --output-document "${WEAVE_NET_CNI_PLUGIN_FILE}"
+
 # Preloading Container Images
 #   masters =~ 1 minute 30 seconds
 #   workers < 1 minute
-WEAVE_NET_CNI_PLUGIN_FILE="weave-net-cni-plugin.yaml" && \
-wget "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')&env.IPALLOC_RANGE=172.16.0.0/16" --output-document "${WEAVE_NET_CNI_PLUGIN_FILE}"
-
 SECONDS=0 && \
 if grep --quiet "master" <<< $(hostname --short); then
   sudo kubeadm config images pull --kubernetes-version "${KUBERNETES_BASE_VERSION}"
