@@ -1,6 +1,7 @@
 #!/bin/bash
 SECONDS=0
 
+./set-multipass-cidr-in-environment.conf-file.sh
 . environment.conf
 . ./generate-cloud-init-files.sh
 . ./create-servers.sh
