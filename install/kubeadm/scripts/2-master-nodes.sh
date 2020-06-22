@@ -63,6 +63,6 @@ sudo kubeadm join lb:6443 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token 9wx878.w93usp7t5r0svr80 \
-  --discovery-token-ca-cert-hash sha256:ea43cc95279959155212c9eb5820f2ca9ce60f9e902075563abc3aea0e0b36a1 \
-  --certificate-key a16d0e3920d7478c4cc572c48d69c02ba80d1464677788937b98d9b4edfc6be7
+  --token 1lo5py.1kc60kvfwxi466bf \
+  --discovery-token-ca-cert-hash sha256:6b4bd739e33530ac7996b13a3d0e5eea34aa7271153fd314c34c3080ec8d7d19 \
+  --certificate-key 10f638a189efaa5d8c7ac995c36ea3b9ed772bb3352edd482ff57a1a6854cee9
