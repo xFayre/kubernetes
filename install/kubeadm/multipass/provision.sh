@@ -5,6 +5,7 @@ if [ ! -e environment.conf ]; then
   echo "You should create a environment.conf file. Try to start cloning templates/environment.conf.sample file."
   echo ""
   echo "  cp templates/environment.conf.sample environment.conf"
+fi
 
 ./set-multipass-cidr-in-environment.conf-file.sh
 . environment.conf
