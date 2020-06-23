@@ -21,7 +21,7 @@ provision() {
   . ./setup-dns-bind.sh
   . ./setup-loadbalancer-haproxy.sh
   . ./update-system-config.sh
-  . ./update-host-etc-hosts.sh
+  . ./update-local-etc-hosts.sh
   . ./setup-cri-containerd.sh
   . ./setup-masters-tools.sh
 
