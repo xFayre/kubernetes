@@ -17,7 +17,7 @@ EOF
 sudo apt-get update | grep --invert-match --extended-regexp "^Hit|^Get"
 
 # Set Kubernetes Version
-KUBERNETES_DESIRED_VERSION='1.18.3' && \
+KUBERNETES_DESIRED_VERSION='1.18' && \
 KUBERNETES_VERSION="$(sudo apt-cache madison kubeadm | grep ${KUBERNETES_DESIRED_VERSION} | head -1 | awk '{ print $3 }')" && \
 KUBERNETES_BASE_VERSION="${KUBERNETES_VERSION%-*}" && \
 echo "" && \
