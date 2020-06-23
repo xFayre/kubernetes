@@ -17,13 +17,14 @@ LOCAL_IP_ADDRESS=$(grep $(hostname --short) /etc/hosts | awk '{ print $1 }') && 
 LOAD_BALANCER_PORT='6443' && \
 LOAD_BALANCER_NAME='lb' && \
 CONTROL_PLANE_ENDPOINT="${LOAD_BALANCER_NAME}:${LOAD_BALANCER_PORT}" && \
+CONTROL_PLANE_ENDPOINT_TEST=$(nc -d ${LOAD_BALANCER_NAME} ${LOAD_BALANCER_PORT} && echo "OK" || echo "FAIL")
 echo "" && \
 echo "LOCAL_IP_ADDRESS...........: ${LOCAL_IP_ADDRESS}" && \
-echo "CONTROL_PLANE_ENDPOINT.....: ${CONTROL_PLANE_ENDPOINT}" && \
+echo "CONTROL_PLANE_ENDPOINT.....: ${CONTROL_PLANE_ENDPOINT} [${CONTROL_PLANE_ENDPOINT_TEST}]" && \
 echo "KUBERNETES_BASE_VERSION....: ${KUBERNETES_BASE_VERSION}" && \
 echo ""
 
-# Initialize master-1 (less than 1 minute)
+# Initialize master-1 (less than 1 minute) - check: http://haproxy.example.com/stats
 SECONDS=0 && \
 KUBEADM_LOG_FILE="${HOME}/kubeadm-init.log" && \
 NODE_NAME=$(hostname --short) && \
@@ -46,6 +47,9 @@ watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'
 # kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 kubectl apply -f weave-net-cni-plugin.yaml
 
+# Optional
+sudo crictl pull quay.io/jcmoraisjr/haproxy-ingress:latest
+
 # Retrieve token information from log file
 KUBEADM_LOG_FILE="${HOME}/kubeadm-init.log" && \
 grep "\-\-certificate-key" "${KUBEADM_LOG_FILE}" --before 2 | grep \
@@ -63,6 +67,6 @@ sudo kubeadm join lb:6443 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token 81sfoe.thnfubzie8qhqkej \
-  --discovery-token-ca-cert-hash sha256:e8aa257bea452ba4255788ebfd72a514e2f99aad3f080542054a37697d22f5fb \
-  --certificate-key 92c5d38fe6db3d8516c1bb712065f2bf4d7aa85555a8b9a9fe4451e2d09b800f
+  --token 5k8d0d.ubi6vbhajnenogm9 \
+  --discovery-token-ca-cert-hash sha256:fce6937c52eb6cb90f77e1356b21a023d3a9dbb237b96064675198cb8553bc3c \
+  --certificate-key 6c45815c5a12f27df4dd7a4724455395e89161d0b6b918183dd65306477b98bb
