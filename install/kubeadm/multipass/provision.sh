@@ -11,14 +11,16 @@ if [ ! -e environment.conf ]; then
 fi
 
 provision() {
-  ./set-multipass-cidr-in-environment.conf-file.sh
+  # ./set-multipass-cidr-in-environment.conf-file.sh
   . environment.conf
   . ./generate-cloud-init-files.sh
   . ./create-servers.sh
+  # . ./update-system.sh
   $(./set-environment-variables-with-servers-information.sh)
   . ./setup-netplan.sh
   . ./setup-hosts-file.sh
   . ./setup-dns-bind.sh
+  # . ./restart-servers.sh
   . ./setup-loadbalancer-haproxy.sh
   . ./update-system-config.sh
   . ./update-local-etc-hosts.sh
