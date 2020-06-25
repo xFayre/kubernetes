@@ -15,17 +15,17 @@ provision() {
   . environment.conf
   . ./generate-cloud-init-files.sh
   . ./create-servers.sh
-  # . ./update-system.sh
+  . ./update-system.sh
   $(./set-environment-variables-with-servers-information.sh)
   . ./setup-netplan.sh
   . ./setup-hosts-file.sh
   . ./setup-dns-bind.sh
-  # . ./restart-servers.sh
+  . ./restart-servers.sh
   . ./setup-loadbalancer-haproxy.sh
-  . ./update-system-config.sh
+  . ./update-system-config.sh > /dev/null
   . ./update-local-etc-hosts.sh
-  . ./setup-cri-containerd.sh
-  . ./setup-masters-tools.sh
+  . ./setup-cri-containerd.sh > /dev/null
+  . ./setup-masters-tools.sh &> /dev/null
 
   printf 'Provision finished in %d hour %d minute %d seconds\n' $((${SECONDS}/3600)) $((${SECONDS}%3600/60)) $((${SECONDS}%60))
 }
