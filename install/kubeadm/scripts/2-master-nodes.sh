@@ -47,9 +47,6 @@ watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'
 # kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 kubectl apply -f weave-net-cni-plugin.yaml
 
-# Optional
-sudo crictl pull quay.io/jcmoraisjr/haproxy-ingress:latest
-
 # Retrieve token information from log file
 KUBEADM_LOG_FILE="${HOME}/kubeadm-init.log" && \
 grep "\-\-certificate-key" "${KUBEADM_LOG_FILE}" --before 2 | grep \
@@ -67,6 +64,9 @@ sudo kubeadm join lb:6443 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token 3ml771.c3y98cw12j14040t \
-  --discovery-token-ca-cert-hash sha256:48747c98d4763245cbf5da4c1214c4a601194f59f27d80eb4cd64e95df01e828 \
-  --certificate-key 8b25b5766fed815f6565573e53a0a8159e256d69f41c1ccd9961abb84c949ae8
+  --token m9doz3.3bx1z8pf4hjij4tw \
+  --discovery-token-ca-cert-hash sha256:cc1414caf4327df5e1fe8ae5c0447d9f7a3039bef30e4e85958771660852f8bb \
+  --certificate-key f983f5d3044c00900616443e0a182f876c7eb041ff09c2ada713dbe6664839b3
+
+# Optional
+sudo crictl pull quay.io/jcmoraisjr/haproxy-ingress:latest
