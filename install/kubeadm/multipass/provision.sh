@@ -18,13 +18,14 @@ provision() {
   $(./03-set-environment-variables-with-servers-information.sh)
   . ./04-setup-netplan.sh
   . ./05-setup-hosts-file.sh
-  # . ./06-setup-dns-bind.sh
-  # . ./07-restart-servers.sh
-  # . ./08-setup-loadbalancer-haproxy.sh
-  # . ./09-update-system-config.sh
-  # . ./10-update-local-etc-hosts.sh
-  # . ./11-setup-cri-containerd.sh
-  # . ./12-setup-masters-tools.sh
+  . ./update-servers.sh
+  . ./06-setup-dns-bind.sh
+  . ./07-restart-servers.sh
+  . ./08-setup-loadbalancer-haproxy.sh
+  . ./09-update-system-config.sh
+  . ./10-update-local-etc-hosts.sh
+  . ./11-setup-cri-containerd.sh
+  . ./12-setup-masters-tools.sh
 
   printf 'Provision finished in %d hour %d minute %d seconds\n' $((${SECONDS}/3600)) $((${SECONDS}%3600/60)) $((${SECONDS}%60))
 }
