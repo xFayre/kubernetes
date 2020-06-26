@@ -8,11 +8,11 @@ cp /shared/dns/named.conf.local /etc/bind/
 cp /shared/dns/"${FORWARD_FILE}" /etc/bind/
 cp /shared/dns/"${REVERSE_FILE}" /etc/bind/
 
-systemctl restart bind9
-systemctl enable bind9
+systemctl restart bind9 -q
+systemctl enable bind9 -q
 
-ufw allow 53
+ufw allow 53 > /dev/null
 
-named-checkconf /etc/bind/named.conf.local
-named-checkzone example.com /etc/bind/"${FORWARD_FILE}"
-named-checkzone example.com /etc/bind/"${REVERSE_FILE}"
+# named-checkconf /etc/bind/named.conf.local
+# named-checkzone ${DOMAIN}" /etc/bind/"${FORWARD_FILE}"
+# named-checkzone ${DOMAIN}" /etc/bind/"${REVERSE_FILE}"
