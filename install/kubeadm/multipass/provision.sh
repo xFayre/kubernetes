@@ -25,7 +25,7 @@ provision() {
   $(./04-set-environment-variables-with-servers-information.sh)
   . ./05-setup-netplan.sh
   . ./06-setup-hosts-file.sh
-  . ./07-update-servers.sh;                                          log_time "servers updated"
+  . ./07-update-servers.sh;                                       log_time "servers updated"
   . ./08-setup-dns-bind.sh;                                       log_time "bind 9 configured"
   . ./09-restart-servers.sh;                                      log_time "servers restarted"
   . ./10-setup-loadbalancer-haproxy.sh;                           log_time "haproxy configured"
