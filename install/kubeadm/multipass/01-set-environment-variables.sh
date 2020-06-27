@@ -51,3 +51,5 @@ if grep -q "THIS_VALUE_WILL_BE_REPLACED_AUTOMATICALLY" environment.conf; then
   
   primary_stop
 fi
+
+source ./environment.conf
