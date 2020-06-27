@@ -2,8 +2,8 @@
 NODE_NAME=$(hostname --short) && \
 sudo kubeadm join lb:6443 \
   --node-name "${NODE_NAME}" \
-  --token m9doz3.3bx1z8pf4hjij4tw \
-  --discovery-token-ca-cert-hash sha256:cc1414caf4327df5e1fe8ae5c0447d9f7a3039bef30e4e85958771660852f8bb \
+  --token e6afxx.a8ok2wf6aou7fmcc \
+  --discovery-token-ca-cert-hash sha256:9ff1c1f011cab1dc00d8657c563b53d706e2c700db9a467fb2822cce9659a2af \
   --v 3
 
 sudo crictl pull nginx:1.18 && \

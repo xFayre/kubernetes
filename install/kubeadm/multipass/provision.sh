@@ -31,8 +31,8 @@ provision() {
   . ./10-setup-loadbalancer-haproxy.sh;                           log_time "haproxy configured"
   . ./11-update-system-config.sh
   . ./12-update-local-etc-hosts.sh
-  # . ./13-setup-cri-containerd.sh
-  # . ./14-setup-masters-tools.sh
+  . ./13-setup-cri-containerd.sh
+  . ./14-setup-masters-tools.sh
 
   log_time "servers provisioned"
 }

@@ -64,9 +64,9 @@ sudo kubeadm join lb:6443 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token m9doz3.3bx1z8pf4hjij4tw \
-  --discovery-token-ca-cert-hash sha256:cc1414caf4327df5e1fe8ae5c0447d9f7a3039bef30e4e85958771660852f8bb \
-  --certificate-key f983f5d3044c00900616443e0a182f876c7eb041ff09c2ada713dbe6664839b3
+  --token e6afxx.a8ok2wf6aou7fmcc \
+  --discovery-token-ca-cert-hash sha256:9ff1c1f011cab1dc00d8657c563b53d706e2c700db9a467fb2822cce9659a2af \
+  --certificate-key 6b9bdc81203f6490db474717608288b9fb5d4c519bc5d5b8a4e78d2cca1d604d
 
 # Optional
 sudo crictl pull quay.io/jcmoraisjr/haproxy-ingress:latest
