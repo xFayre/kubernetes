@@ -35,7 +35,7 @@ sudo kubeadm init \
   --kubernetes-version "${KUBERNETES_BASE_VERSION}" \
   --control-plane-endpoint "${CONTROL_PLANE_ENDPOINT}" \
   --upload-certs | tee "${KUBEADM_LOG_FILE}" && \
-printf '%d hour %d minute %d seconds\n' $((${SECONDS}/3600)) $((${SECONDS}%3600/60)) $((${SECONDS}%60))
+printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60))
 
 # Watch Nodes and Pods from kube-system namespace
 watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'

@@ -45,7 +45,7 @@ else
     kubelet \
     kubeadm
 fi && \
-printf '%d hour %d minute %d seconds\n' $((${SECONDS}/3600)) $((${SECONDS}%3600/60)) $((${SECONDS}%60))
+printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60))
 
 # CRI Config
 CONTAINERD_SOCK="unix:///var/run/containerd/containerd.sock" && \
@@ -76,7 +76,7 @@ else
   sudo crictl pull "k8s.gcr.io/kube-proxy:v${KUBERNETES_BASE_VERSION}"
 fi
 grep "image:" "${WEAVE_NET_CNI_PLUGIN_FILE}" | awk -F "'" '{ print "sudo crictl pull " $2 }' | sh
-printf '%d hour %d minute %d seconds\n' $((${SECONDS}/3600)) $((${SECONDS}%3600/60)) $((${SECONDS}%60))
+printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60))
 
 # List Images
 sudo crictl images

@@ -1,6 +1,8 @@
 #!/bin/bash
 EMPTY_RESPONSE="-"
 
+source environment.conf
+
 check_dns_reponse() {
   SERVER=$1
   multipass exec ${SERVER} -- nslookup dns > /dev/null && echo "OK" || echo "FAIL"
@@ -120,13 +122,12 @@ execute() {
   done
 }
 
-HEADER_LINE_1="SERVER;DNS;ROUTE;CONTAINERD;LB_PORT_6443;KUBEADM;KUBELET;KUBECTL;IMAGES"
-HEADER_LINE_2="=============;=====;=====;=============;==============;=======;=======;=======;======================="
+HEADER_LINE="SERVER;DNS;ROUTE;CONTAINERD;LB_PORT_6443;KUBEADM;KUBELET;KUBECTL;IMAGES"
 
 SECONDS=0
 
-execute | sed -e "1i${HEADER_LINE_1}" -e "1i${HEADER_LINE_2}" | column -t -s ";"
+execute | sed -e "1i${HEADER_LINE}" | column -t -s ";"
 
 echo ""
 
-printf 'Elapsed time: %02d:%02d:%02d\n' $((${SECONDS} / 3600)) $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60))
+printf 'Validation elapsed time: %02d:%02d:%02d\n' $((${SECONDS} / 3600)) $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60))
