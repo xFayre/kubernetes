@@ -1,4 +1,6 @@
 network:
+  version: 2
+  renderer: networkd
   ethernets:
     ens4:
       dhcp4-overrides:
