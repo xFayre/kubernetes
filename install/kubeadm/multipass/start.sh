@@ -1,6 +1,6 @@
 #!/bin/bash
 SECONDS=0
 
-./list.sh | awk '{ print $1 }' | sed 's/^/multipass start /' | sh
+multipass start $(./list.sh | awk '{ print $1 }' | xargs)
 
-printf '%d hour %d minute %d seconds\n' $((${SECONDS}/3600)) $((${SECONDS}%3600/60)) $((${SECONDS}%60))
+printf 'Start elapsed time: %02d:%02d:%02d\n' $((${SECONDS} / 3600)) $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60))

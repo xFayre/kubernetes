@@ -13,7 +13,7 @@ fi
 log_time() {
   MESSAGE=$1
   
-  printf '%d minutes %d seconds - %s.\n' $((${SECONDS}%3600/60)) $((${SECONDS}%60)) "${MESSAGE}"
+  printf '[%02d:%02d:%02d] - %s\n' $((${SECONDS} / 3600)) $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60)) "${MESSAGE}"
 
   echo ""
 }
@@ -34,7 +34,7 @@ provision() {
   . ./13-setup-cri-containerd.sh
   . ./14-setup-masters-tools.sh
 
-  log_time "servers provisioned"
+  log_time "provision process is done"
 }
 
 provision | tee provision.log
