@@ -18,25 +18,25 @@ sysctl --system > /dev/null
 
 ## Set up the repository
 ### Install packages to allow apt to use a repository over HTTPS
-apt-get update -qq && \
+apt-get update -qqq && \
   apt-get install -y -qqq \
     apt-transport-https \
     ca-certificates \
     curl \
-    software-properties-common
+    software-properties-common &> /dev/null
 
 ## Add Docker’s official GPG key
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - &> /dev/null
 
 ## Add Docker apt repository.
-add-apt-repository -q \
+add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
     $(lsb_release --codename --short) \
     stable" &> /dev/null
 
 ## Install containerd
-apt-get update -qq && \
-apt-get install -y -qqq containerd.io
+apt-get update -qqq && \
+apt-get install -y -qqq containerd.io &> /dev/null
 
 # Configure containerd
 mkdir -p /etc/containerd && \
