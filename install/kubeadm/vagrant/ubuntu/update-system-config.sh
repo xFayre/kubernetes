@@ -4,7 +4,7 @@
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
 # Disable SWAP
-swapoff -a
+swapoff -a &> /dev/null
 
 # Update /etc/fstab remove lines with 'swap'
 sed '/swap/d' /etc/fstab -i
@@ -16,4 +16,4 @@ net.bridge.bridge-nf-call-iptables = 1
 EOF
 
 # Enable Configuration
-sysctl --system
+sysctl --system &> /dev/null
