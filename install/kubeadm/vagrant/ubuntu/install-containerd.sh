@@ -14,12 +14,12 @@ net.ipv4.ip_forward                 = 1
 net.bridge.bridge-nf-call-ip6tables = 1
 EOF
 
-sysctl --system
+sysctl --system > /dev/null
 
 ## Set up the repository
 ### Install packages to allow apt to use a repository over HTTPS
-apt-get update && \
-  apt-get install -y \
+apt-get update -q && \
+  apt-get install -y -qq \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -35,8 +35,8 @@ add-apt-repository \
     stable"
 
 ## Install containerd
-apt-get update && \
-apt-get install -y containerd.io
+apt-get update -q && \
+apt-get install -y -qq containerd.io
 
 # Configure containerd
 mkdir -p /etc/containerd && \
