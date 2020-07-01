@@ -29,7 +29,7 @@ SECONDS=0 && \
 KUBEADM_LOG_FILE="${HOME}/kubeadm-init.log" && \
 NODE_NAME=$(hostname --short) && \
 sudo kubeadm init \
-  --v 3 \
+  --v 9 \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
   --kubernetes-version "${KUBERNETES_BASE_VERSION}" \
@@ -64,9 +64,9 @@ sudo kubeadm join lb:6443 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token e6afxx.a8ok2wf6aou7fmcc \
-  --discovery-token-ca-cert-hash sha256:9ff1c1f011cab1dc00d8657c563b53d706e2c700db9a467fb2822cce9659a2af \
-  --certificate-key 6b9bdc81203f6490db474717608288b9fb5d4c519bc5d5b8a4e78d2cca1d604d
+  --token 84pj6e.gcvbkqzxo368p28o \
+  --discovery-token-ca-cert-hash sha256:49496f94067c8398b9fcd5f3a9e0478111eb7a45891645a413c6226ba42f8251 \
+  --certificate-key cef5b8b833ec47fdb41eedce35873b005c48f9429a1803a15617f8c5fdc10c31
 
 # Optional
 sudo crictl pull quay.io/jcmoraisjr/haproxy-ingress:latest

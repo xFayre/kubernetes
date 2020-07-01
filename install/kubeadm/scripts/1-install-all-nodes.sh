@@ -85,4 +85,5 @@ grep "image:" "${WEAVE_NET_CNI_PLUGIN_FILE}" | awk -F "'" '{ print "sudo crictl 
 printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60))
 
 # List Images
-sudo crictl images
+sudo crictl images && echo "" && \
+  sudo crictl images | sed 1d | wc -l 
