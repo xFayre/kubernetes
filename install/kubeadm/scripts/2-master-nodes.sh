@@ -45,6 +45,15 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 # Watch Nodes and Pods from kube-system namespace
 watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'
 
+# Watch network changes
+while true; do
+  ip -4 a | sed -e '/valid_lft/d' | awk '{ print $1, $2 }' | sed 'N;s/\n/ /' | tr -d ":" | awk '{ print $2, $4 }' | sort | sed '1iINTERFACE CIDR' | column -t && \
+  echo "" && \
+  route -n | sed /^Kernel/d | awk '{ print $1, $2, $3, $4, $5, $8 }' | column -t && echo "" && \
+  sleep 3 && \
+  clear
+done
+
 # Install CNI Plugin
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#pod-network
 # https://medium.com/google-cloud/understanding-kubernetes-networking-pods-7117dd28727
@@ -58,7 +67,16 @@ grep "\-\-certificate-key" "${KUBEADM_LOG_FILE}" --before 2 | grep \
   --only-matching \
   --extended-regexp "\-\-.*" | sed 's/\-\-control-plane //; s/^/  /'
 
-# Adding a Control Plane Node
+# Adding a Control Plane Node - Monitoring
+while true; do
+  ip -4 a | sed -e '/valid_lft/d' | awk '{ print $1, $2 }' | sed 'N;s/\n/ /' | tr -d ":" | awk '{ print $2, $4 }' | sort | sed '1iINTERFACE CIDR' | column -t && \
+  echo "" && \
+  route -n | sed /^Kernel/d | awk '{ print $1, $2, $3, $4, $5, $8 }' | column -t && echo "" && \
+  sleep 3 && \
+  clear
+done
+
+# Join Command
 NODE_NAME=$(hostname --short) && \
 LOCAL_IP_ADDRESS=$(grep ${NODE_NAME} /etc/hosts | head -1 | awk '{ print $1 }') && \
 echo "" && \
@@ -69,9 +87,9 @@ sudo kubeadm join lb:6443 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token 5vzvnv.na18se4q50eax6pw \
-  --discovery-token-ca-cert-hash sha256:e7ef59333bd4e63625d144764aacdf870b59fe49533ebff178ab8f36f8330182 \
-  --certificate-key 51bc43a4fbf9716b7d70eca5edefe02c16a9485376419a53cb0df38cb0f0b875
+  --token t5c613.otln9ayv12d2cmk6 \
+  --discovery-token-ca-cert-hash sha256:a3296e44ac9be181bd05406c27007592d6d3298cc5b970cc94cbe6f3e0ea8d1e \
+  --certificate-key 74f6f3b50d54348a0303bc166958604d27e8c8e38553aa175180f25a1402c8f7
 
 # Optional
 sudo crictl pull quay.io/jcmoraisjr/haproxy-ingress:latest

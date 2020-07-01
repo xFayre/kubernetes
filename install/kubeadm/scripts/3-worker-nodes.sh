@@ -11,12 +11,19 @@ echo "CONTROL_PLANE_ENDPOINT.....: ${CONTROL_PLANE_ENDPOINT} [${CONTROL_PLANE_EN
 echo ""
 
 SECONDS=0 && \
-sudo kubeadm join lb:6443 \
+sudo kubeadm join "${CONTROL_PLANE_ENDPOINT}" \
   --node-name "${NODE_NAME}" \
-  --token pimac5.tjxa437lje74ciui \
-  --discovery-token-ca-cert-hash sha256:d083189eeed213b5c51d78248e6a92bfc3bd8826ae5cc9f479d5130b031134e2 \
-  --v 9 | tee "kubeadm-join.log" && \
-printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60))
+  --token t5c613.otln9ayv12d2cmk6 \
+  --discovery-token-ca-cert-hash sha256:a3296e44ac9be181bd05406c27007592d6d3298cc5b970cc94cbe6f3e0ea8d1e \
+  --v 5 | tee "kubeadm-join.log" && \
+printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60)) && \
+while true; do
+  ip -4 a | sed -e '/valid_lft/d' | awk '{ print $1, $2 }' | sed 'N;s/\n/ /' | tr -d ":" | awk '{ print $2, $4 }' | sort | sed '1iINTERFACE CIDR' | column -t && \
+  echo "" && \
+  route -n | sed /^Kernel/d | awk '{ print $1, $2, $3, $4, $5, $8 }' | column -t && echo "" && \
+  sleep 3 && \
+  clear
+done
 
 sudo crictl pull nginx:1.18 && \
 sudo crictl pull nginx:1.19 && \
