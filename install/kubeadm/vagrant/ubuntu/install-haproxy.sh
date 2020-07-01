@@ -15,6 +15,24 @@ apt-get install -y -qqq \
 mv "${HAPROXY_CONFIG_FILE}" "${HOME}/"
 
 cat <<EOF | tee "${HAPROXY_CONFIG_FILE}"
+frontend kubernetes-apiserver-6443
+    bind ${ADDRESS}:6443
+    option tcplog
+    mode tcp
+    default_backend kubernetes-apiserver
+
+backend kubernetes-apiserver
+    mode tcp
+    balance roundrobin
+    option tcp-check
+EOF
+
+for ((line = 1; line <= ${MASTER_NODES_COUNT}; line++)); do
+  echo "    server master-${line} master-${line}.${DOMAIN_NAME}:6443 check fall 3 rise 2" >> "${HAPROXY_CONFIG_FILE}"
+done
+
+cat <<EOF | tee -a "${HAPROXY_CONFIG_FILE}"
+
 frontend apps-ingress-80
     bind ${ADDRESS}:80
     mode http
@@ -34,24 +52,6 @@ EOF
 
 for ((line = 1; line <= ${MASTER_NODES_COUNT}; line++)); do
   echo "    server master-${line} master-${line}.${DOMAIN_NAME}:80 check fall 3 rise 2" >> "${HAPROXY_CONFIG_FILE}"
-done
-
-cat <<EOF | tee -a "${HAPROXY_CONFIG_FILE}"
-
-frontend kubernetes-apiserver-6443
-    bind ${ADDRESS}:6443
-    option tcplog
-    mode tcp
-    default_backend kubernetes-apiserver
-
-backend kubernetes-apiserver
-    mode tcp
-    balance roundrobin
-    option tcp-check
-EOF
-
-for ((line = 1; line <= ${MASTER_NODES_COUNT}; line++)); do
-  echo "    server master-${line} master-${line}.${DOMAIN_NAME}:6443 check fall 3 rise 2" >> "${HAPROXY_CONFIG_FILE}"
 done
 
 cat <<EOF | tee -a "${HAPROXY_CONFIG_FILE}"

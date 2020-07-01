@@ -10,5 +10,5 @@ network:
         search: [${DOMAIN_NAME}]
         addresses: [${IP_DNS}, 8.8.8.8, 8.8.4.4]
       routes:
-      - to: 10.96.0.0/16
+      - to: 10.96.0.0/12
         via: ${IP_SERVER}

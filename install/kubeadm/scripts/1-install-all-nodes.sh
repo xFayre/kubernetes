@@ -27,7 +27,7 @@ echo "KUBERNETES_BASE_VERSION....: ${KUBERNETES_BASE_VERSION}" && \
 echo ""
 
 # Install Kubelet, Kubeadm and Kubectl
-#   all =~ 1 minute
+#   all =~ 1 minute 30 seconds
 SECONDS=0 && \
 if grep --quiet "master" <<< $(hostname --short); then
   sudo apt-get install --yes -qq \

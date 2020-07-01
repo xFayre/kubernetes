@@ -40,6 +40,11 @@ printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 6
 # Watch Nodes and Pods from kube-system namespace
 watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'
 
+# Config
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
 # Install CNI Plugin
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#pod-network
 # https://medium.com/google-cloud/understanding-kubernetes-networking-pods-7117dd28727
@@ -60,13 +65,13 @@ echo "" && \
 echo "NODE_NAME..................: ${NODE_NAME}" && \
 echo "LOCAL_IP_ADDRESS...........: ${LOCAL_IP_ADDRESS}" && \
 sudo kubeadm join lb:6443 \
-  --v 1 \
+  --v 5 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token 84pj6e.gcvbkqzxo368p28o \
-  --discovery-token-ca-cert-hash sha256:49496f94067c8398b9fcd5f3a9e0478111eb7a45891645a413c6226ba42f8251 \
-  --certificate-key cef5b8b833ec47fdb41eedce35873b005c48f9429a1803a15617f8c5fdc10c31
+  --token uzw9cx.h6zgn1ymku8fj61l \
+  --discovery-token-ca-cert-hash sha256:7995ba9ca8d4bda578f1fba1bfe79408efc9c8640299f5edd74459524f4ea7c1 \
+  --certificate-key 34308dee9fa88040a67defd84b4d07bf9f716a431b97fdd77a271ee6059dcd49
 
 # Optional
 sudo crictl pull quay.io/jcmoraisjr/haproxy-ingress:latest
