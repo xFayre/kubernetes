@@ -19,11 +19,11 @@ frontend apps-ingress-80
     bind ${ADDRESS}:80
     mode http
     stats enable
-    stats auth admin:aneasyvaluetoforget
+    stats auth admin:MySup3r_Scret!Psswrd@
     stats hide-version
     stats show-node
     stats refresh 60s
-    stats uri /haproxy?stats
+    stats uri /stats
     default_backend apps-ingress
 
 backend apps-ingress
