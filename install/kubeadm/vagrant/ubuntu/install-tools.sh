@@ -10,5 +10,8 @@ BAT_VERSION="0.15.1" && \
 BAT_DEB_FILE="bat_${BAT_VERSION}_amd64.deb" && \
 wget "https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION}/${BAT_DEB_FILE}" \
   --output-document "${BAT_DEB_FILE}" --quiet && \
-sudo dpkg -i "${BAT_DEB_FILE}" &> /dev/null && rm "${BAT_DEB_FILE}" && \
-echo "alias cat='bat -p'" >> ~/.bash_aliases && source ~/.bash_aliases && bat --version
+sudo dpkg -i "${BAT_DEB_FILE}" &> /dev/null && \
+rm "${BAT_DEB_FILE}" && \
+echo "alias cat='bat -p'" >> ~/.bash_aliases && \
+  source ~/.bash_aliases && \
+  bat --version

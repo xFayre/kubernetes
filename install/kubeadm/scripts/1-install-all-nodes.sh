@@ -14,7 +14,7 @@ deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 
 # Update package list
-sudo apt-get update -q
+sudo apt-get update -qq
 
 # Set Kubernetes Version
 KUBERNETES_DESIRED_VERSION='1.18' && \
