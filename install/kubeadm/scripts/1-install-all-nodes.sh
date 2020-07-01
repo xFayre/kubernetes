@@ -5,7 +5,7 @@ nc -dv lb 6443 && echo "OK" || echo "FAIL"
 route -n | grep --quiet "10.96.0.0" && echo "OK" || echo "FAIL"
 
 # Update and Get Google Cloud Apt Key
-sudo apt-get update | grep --invert-match --extended-regexp "^Hit|^Get" && \
+sudo apt-get update -qq && \
 sudo curl --silent "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | sudo apt-key add -
 
 # Add Kubernetes Repository
@@ -14,7 +14,7 @@ deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 
 # Update package list
-sudo apt-get update | grep --invert-match --extended-regexp "^Hit|^Get"
+sudo apt-get update -qq
 
 # Set Kubernetes Version
 KUBERNETES_DESIRED_VERSION='1.18' && \
@@ -27,9 +27,10 @@ echo "KUBERNETES_BASE_VERSION....: ${KUBERNETES_BASE_VERSION}" && \
 echo ""
 
 # Install Kubelet, Kubeadm and Kubectl
+#   all =~ 1 minute
 SECONDS=0 && \
 if grep --quiet "master" <<< $(hostname --short); then
-  sudo apt-get install --yes \
+  sudo apt-get install --yes -qq \
     kubeadm="${KUBERNETES_VERSION}" \
     kubelet="${KUBERNETES_VERSION}" \
     kubectl="${KUBERNETES_VERSION}" | grep --invert-match --extended-regexp "^Hit|^Get|^Selecting|^Preparing|^Unpacking" && \
@@ -38,7 +39,7 @@ if grep --quiet "master" <<< $(hostname --short); then
     kubeadm \
     kubectl
 else
-  sudo apt-get install --yes \
+  sudo apt-get install --yes -qq \
     kubeadm="${KUBERNETES_VERSION}" \
     kubelet="${KUBERNETES_VERSION}" | grep --invert-match --extended-regexp "^Hit|^Get|^Selecting|^Preparing|^Unpacking" && \
   sudo apt-mark hold \
@@ -86,4 +87,4 @@ printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 6
 
 # List Images
 sudo crictl images && echo "" && \
-  sudo crictl images | sed 1d | wc -l 
+  sudo crictl images | sed 1d | wc -l

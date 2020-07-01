@@ -1,6 +1,5 @@
-SECONDS=0
-
 # The parameters below are getting from the first Contol Plane Config
+SECONDS=0 && \
 NODE_NAME=$(hostname --short) && \
 sudo kubeadm join lb:6443 \
   --node-name "${NODE_NAME}" \
@@ -11,5 +10,3 @@ sudo kubeadm join lb:6443 \
 sudo crictl pull nginx:1.18 && \
 sudo crictl pull nginx:1.19 && \
 sudo crictl pull yauritux/busybox-curl
-
-printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60))

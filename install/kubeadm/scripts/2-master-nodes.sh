@@ -24,7 +24,7 @@ echo "CONTROL_PLANE_ENDPOINT.....: ${CONTROL_PLANE_ENDPOINT} [${CONTROL_PLANE_EN
 echo "KUBERNETES_BASE_VERSION....: ${KUBERNETES_BASE_VERSION}" && \
 echo ""
 
-# Initialize master-1 (less than 1 minute) - check: http://haproxy.example.com/stats
+# Initialize master-1 (=~ 1 minute 30 seconds) - check: http://haproxy.example.com/stats
 SECONDS=0 && \
 KUBEADM_LOG_FILE="${HOME}/kubeadm-init.log" && \
 NODE_NAME=$(hostname --short) && \
