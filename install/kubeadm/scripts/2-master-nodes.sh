@@ -17,7 +17,7 @@ LOCAL_IP_ADDRESS=$(grep $(hostname --short) /etc/hosts | awk '{ print $1 }') && 
 LOAD_BALANCER_PORT='6443' && \
 LOAD_BALANCER_NAME='lb' && \
 CONTROL_PLANE_ENDPOINT="${LOAD_BALANCER_NAME}:${LOAD_BALANCER_PORT}" && \
-CONTROL_PLANE_ENDPOINT_TEST=$(nc -d ${LOAD_BALANCER_NAME} ${LOAD_BALANCER_PORT} && echo "OK" || echo "FAIL")
+CONTROL_PLANE_ENDPOINT_TEST=$(nc -d ${LOAD_BALANCER_NAME} ${LOAD_BALANCER_PORT} && echo "OK" || echo "FAIL") && \
 echo "" && \
 echo "LOCAL_IP_ADDRESS...........: ${LOCAL_IP_ADDRESS}" && \
 echo "CONTROL_PLANE_ENDPOINT.....: ${CONTROL_PLANE_ENDPOINT} [${CONTROL_PLANE_ENDPOINT_TEST}]" && \
@@ -37,13 +37,13 @@ sudo kubeadm init \
   --upload-certs | tee "${KUBEADM_LOG_FILE}" && \
 printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60))
 
-# Watch Nodes and Pods from kube-system namespace
-watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'
-
 # Config
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+# Watch Nodes and Pods from kube-system namespace
+watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'
 
 # Install CNI Plugin
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#pod-network
@@ -69,9 +69,9 @@ sudo kubeadm join lb:6443 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token uzw9cx.h6zgn1ymku8fj61l \
-  --discovery-token-ca-cert-hash sha256:7995ba9ca8d4bda578f1fba1bfe79408efc9c8640299f5edd74459524f4ea7c1 \
-  --certificate-key 34308dee9fa88040a67defd84b4d07bf9f716a431b97fdd77a271ee6059dcd49
+  --token 5vzvnv.na18se4q50eax6pw \
+  --discovery-token-ca-cert-hash sha256:e7ef59333bd4e63625d144764aacdf870b59fe49533ebff178ab8f36f8330182 \
+  --certificate-key 51bc43a4fbf9716b7d70eca5edefe02c16a9485376419a53cb0df38cb0f0b875
 
 # Optional
 sudo crictl pull quay.io/jcmoraisjr/haproxy-ingress:latest
