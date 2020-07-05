@@ -17,4 +17,4 @@ kind create cluster \
   --config kind-example-config.yaml \
   --name ${CLUSTER_NAME}
 
-slapsed ${SECONDS}
+elapsed ${SECONDS}
