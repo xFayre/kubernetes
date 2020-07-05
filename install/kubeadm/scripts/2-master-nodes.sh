@@ -11,7 +11,7 @@ source ~/.bashrc
 
 # WARNING: We should run these commands ONLY on master-1
 KUBERNETES_DESIRED_VERSION='1.18' && \
-KUBERNETES_VERSION="$(sudo apt-cache madison kubeadm | grep ${KUBERNETES_DESIRED_VERSION} | head -1 | awk '{ print $3 }')" && \
+KUBERNETES_VERSION="$(apt-cache madison kubeadm | grep ${KUBERNETES_DESIRED_VERSION} | head -1 | awk '{ print $3 }')" && \
 KUBERNETES_BASE_VERSION="${KUBERNETES_VERSION%-*}" && \
 LOCAL_IP_ADDRESS=$(grep $(hostname --short) /etc/hosts | awk '{ print $1 }') && \
 LOAD_BALANCER_PORT='6443' && \
@@ -23,6 +23,15 @@ echo "LOCAL_IP_ADDRESS...........: ${LOCAL_IP_ADDRESS}" && \
 echo "CONTROL_PLANE_ENDPOINT.....: ${CONTROL_PLANE_ENDPOINT} [${CONTROL_PLANE_ENDPOINT_TEST}]" && \
 echo "KUBERNETES_BASE_VERSION....: ${KUBERNETES_BASE_VERSION}" && \
 echo ""
+
+# [Presentation note: show network interfaces and routes before init]
+while true; do
+  ip -4 a | sed -e '/valid_lft/d' | awk '{ print $1, $2 }' | sed 'N;s/\n/ /' | tr -d ":" | awk '{ print $2, $4 }' | sort | sed '1iINTERFACE CIDR' | column -t && \
+  echo "" && \
+  route -n | sed /^Kernel/d | awk '{ print $1, $2, $3, $4, $5, $8 }' | column -t && echo "" && \
+  sleep 3 && \
+  clear
+done
 
 # Initialize master-1 (=~ 1 minute 30 seconds) - check: http://haproxy.example.com/stats
 SECONDS=0 && \
@@ -43,16 +52,15 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # Watch Nodes and Pods from kube-system namespace
+# [Presentation]
+# get nodes -o wide | sed "s/Ubuntu.*LTS/Ubuntu/g" | awk '{ print $1,$2,$5,$6,$10 }' | column -t
 watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'
 
-# Watch network changes
-while true; do
-  ip -4 a | sed -e '/valid_lft/d' | awk '{ print $1, $2 }' | sed 'N;s/\n/ /' | tr -d ":" | awk '{ print $2, $4 }' | sort | sed '1iINTERFACE CIDR' | column -t && \
-  echo "" && \
-  route -n | sed /^Kernel/d | awk '{ print $1, $2, $3, $4, $5, $8 }' | column -t && echo "" && \
-  sleep 3 && \
-  clear
-done
+watch -n 3 'kubectl get nodes,cm,deploy,rs,ds,po,svc,ep,ing,pv,pvc -o wide -n dev'
+
+cat <<EOF > monitor.sh
+kubectl get nodes -o wide | sed "s/Ubuntu.*LTS/Ubuntu/g" | awk '{ print \$1,\$2,\$5,\$6,\$10 }' | column -t
+EOF
 
 # Install CNI Plugin
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#pod-network
@@ -87,9 +95,9 @@ sudo kubeadm join lb:6443 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token t5c613.otln9ayv12d2cmk6 \
-  --discovery-token-ca-cert-hash sha256:a3296e44ac9be181bd05406c27007592d6d3298cc5b970cc94cbe6f3e0ea8d1e \
-  --certificate-key 74f6f3b50d54348a0303bc166958604d27e8c8e38553aa175180f25a1402c8f7
+  --token z9u1as.qkre17o1q0btjn9g \
+  --discovery-token-ca-cert-hash sha256:83f424dac22f7b0d0c51405d302aff3038befb254180ff7cb913417727db90e2 \
+  --certificate-key b4d4e2e34aed39633d74cfe8edbfe521c9cd6eaf2b28fb8c3e38aa6397c65b6e
 
 # Optional
 sudo crictl pull quay.io/jcmoraisjr/haproxy-ingress:latest

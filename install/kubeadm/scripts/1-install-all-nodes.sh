@@ -18,12 +18,12 @@ sudo apt-get update -qq
 
 # Set Kubernetes Version
 KUBERNETES_DESIRED_VERSION='1.18' && \
-KUBERNETES_VERSION="$(sudo apt-cache madison kubeadm | grep ${KUBERNETES_DESIRED_VERSION} | head -1 | awk '{ print $3 }')" && \
-KUBERNETES_BASE_VERSION="${KUBERNETES_VERSION%-*}" && \
+KUBERNETES_VERSION="$(apt-cache madison kubeadm | grep ${KUBERNETES_DESIRED_VERSION} | head -1 | awk '{ print $3 }')" && \
+KUBERNETES_IMAGE_VERSION="${KUBERNETES_VERSION%-*}" && \
 echo "" && \
 echo "KUBERNETES_DESIRED_VERSION.: ${KUBERNETES_DESIRED_VERSION}" && \
 echo "KUBERNETES_VERSION.........: ${KUBERNETES_VERSION}" && \
-echo "KUBERNETES_BASE_VERSION....: ${KUBERNETES_BASE_VERSION}" && \
+echo "KUBERNETES_IMAGE_VERSION...: ${KUBERNETES_IMAGE_VERSION}" && \
 echo ""
 
 # Install Kubelet, Kubeadm and Kubectl
@@ -53,6 +53,7 @@ CONTAINERD_SOCK="unix:///var/run/containerd/containerd.sock" && \
 sudo crictl config \
   runtime-endpoint "${CONTAINERD_SOCK}" \
   image-endpoint "${CONTAINERD_SOCK}" && \
+clear && \
 sudo crictl images
 
 # CNI Plugin
@@ -72,11 +73,13 @@ wget "${WEAVE_NET_CNI_PLUGIN_URL}" \
 #   workers < 1 minute
 SECONDS=0 && \
 if grep --quiet "master" <<< $(hostname --short); then
-  sudo kubeadm config images pull --kubernetes-version "${KUBERNETES_BASE_VERSION}"
+  sudo kubeadm config images pull --kubernetes-version "${KUBERNETES_IMAGE_VERSION}"
 else
-  sudo crictl pull "k8s.gcr.io/kube-proxy:v${KUBERNETES_BASE_VERSION}"
+  sudo crictl pull "k8s.gcr.io/kube-proxy:v${KUBERNETES_IMAGE_VERSION}"
 fi
+clear
 grep "image:" "${WEAVE_NET_CNI_PLUGIN_FILE}" | awk -F "'" '{ print "sudo crictl pull " $2 }' | sh
+clear
 printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60))
 
 # List Images
