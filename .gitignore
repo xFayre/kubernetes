@@ -3,6 +3,7 @@ disks/
 .vagrant/
 .vagrant/**/*
 **/*.log
+**/*.swp
 .vagrant/machines/master-1/virtualbox/vagrant_cwd
 .status
 .running
