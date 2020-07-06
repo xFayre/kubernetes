@@ -14,8 +14,8 @@ echo ""
 SECONDS=0 && \
 sudo kubeadm join "${CONTROL_PLANE_ENDPOINT}" \
   --node-name "${NODE_NAME}" \
-  --token z9u1as.qkre17o1q0btjn9g \
-  --discovery-token-ca-cert-hash sha256:83f424dac22f7b0d0c51405d302aff3038befb254180ff7cb913417727db90e2 \
+  --token vqrpv5.m8n442w7k42zoxdi \
+  --discovery-token-ca-cert-hash sha256:ca1979ab834f248f87ced5b312a7018a6a293b422a281cb89ac9ffcfa59145e9 \
   --v 5 | tee "kubeadm-join.log" && \
 printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60)) && \
 while true; do
@@ -25,6 +25,7 @@ while true; do
   sleep 3 && \
   clear
 done
+./monitor-network-changes.sh
 
 sudo crictl pull nginx:1.18 && \
 sudo crictl pull nginx:1.19 && \
