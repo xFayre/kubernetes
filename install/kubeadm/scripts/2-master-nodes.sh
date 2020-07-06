@@ -70,19 +70,38 @@ grep "\-\-certificate-key" "${KUBEADM_LOG_FILE}" --before 2 | grep \
 # Join Command
 NODE_NAME=$(hostname --short) && \
 LOCAL_IP_ADDRESS=$(grep ${NODE_NAME} /etc/hosts | head -1 | awk '{ print $1 }') && \
+LOAD_BALANCER_PORT='6443' && \
+LOAD_BALANCER_NAME='lb' && \
+CONTROL_PLANE_ENDPOINT="${LOAD_BALANCER_NAME}:${LOAD_BALANCER_PORT}" && \
+CONTROL_PLANE_ENDPOINT_TEST=$(curl -Is ${LOAD_BALANCER_NAME}:${LOAD_BALANCER_PORT} &> /dev/null && echo "OK" || echo "FAIL") && \
+clear && \
 echo "" && \
 echo "NODE_NAME..................: ${NODE_NAME}" && \
 echo "LOCAL_IP_ADDRESS...........: ${LOCAL_IP_ADDRESS}" && \
-sudo kubeadm join lb:6443 \
+echo "CONTROL_PLANE_ENDPOINT.....: ${CONTROL_PLANE_ENDPOINT} [${CONTROL_PLANE_ENDPOINT_TEST}]" && \
+echo ""
+
+sudo kubeadm join "${CONTROL_PLANE_ENDPOINT}" \
   --v 5 \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token vqrpv5.m8n442w7k42zoxdi \
-  --discovery-token-ca-cert-hash sha256:ca1979ab834f248f87ced5b312a7018a6a293b422a281cb89ac9ffcfa59145e9 \
-  --certificate-key 4a251060ff97b57f906d9128df8231c314c4733d2ff5807587d5e2948f5e5b9b
+  --token huefvx.or8w2t52je2g80ut \
+  --discovery-token-ca-cert-hash sha256:3e847f8b6ba5833dabab55b1b89e2887e4e7a717ec81eeeaa69f7d57794f6e70 \
+  --certificate-key c5b2ce361012c1807a1f3fedd3d541916947156a883bed87d6df7333cce71803
 
 # Monitoring during presentation (narrow screen space)
-cat <<EOF > monitor.sh
+cat <<EOF > namespace-info.sh
 kubectl get nodes -o wide | sed "s/Ubuntu.*LTS/Ubuntu/g" | awk '{ print \$1,\$2,\$5,\$6,\$10 }' | column -t
+echo ""
+kubectl get cm,deploy -o wide
+echo ""
+kubectl get rs -o wide | awk '{ print \$1, \$2, \$3, \$4, \$5, \$6, \$7 }' | column -t
+echo ""
+kubectl get pods -o wide | awk '{ print \$1, \$2, \$3, \$4, \$5, \$6, \$7 }' | column -t
+echo ""
+kubectl get svc,ep,ing,pv,pvc -o wide
 EOF
+chmod +x *.sh
+clear
+ls

@@ -14,8 +14,8 @@ echo ""
 SECONDS=0 && \
 sudo kubeadm join "${CONTROL_PLANE_ENDPOINT}" \
   --node-name "${NODE_NAME}" \
-  --token vqrpv5.m8n442w7k42zoxdi \
-  --discovery-token-ca-cert-hash sha256:ca1979ab834f248f87ced5b312a7018a6a293b422a281cb89ac9ffcfa59145e9 \
+  --token huefvx.or8w2t52je2g80ut \
+  --discovery-token-ca-cert-hash sha256:3e847f8b6ba5833dabab55b1b89e2887e4e7a717ec81eeeaa69f7d57794f6e70 \
   --v 5 | tee "kubeadm-join.log" && \
 printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60)) && \
 ./monitor-network-changes.sh
