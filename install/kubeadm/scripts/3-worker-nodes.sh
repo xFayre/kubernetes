@@ -9,8 +9,8 @@ echo "" && \
 echo "NODE_NAME....................: ${NODE_NAME}" && \
 echo "LOCAL_IP_ADDRESS.............: ${LOCAL_IP_ADDRESS}" && \
 echo "CONTROL_PLANE_ENDPOINT.......: ${CONTROL_PLANE_ENDPOINT} [${CONTROL_PLANE_ENDPOINT_TEST}]" && \
-echo "TOKEN........................: ${#KUBEADM_TOKEN}" && \
-echo "DISCOVERY_TOKEN_CA_CERT_HASH.: ${#KUBEADM_DISCOVERY_TOKEN_CA_CERT_HASH}" && \
+echo "TOKEN........................: ${KUBEADM_TOKEN}" && \
+echo "DISCOVERY_TOKEN_CA_CERT_HASH.: ${KUBEADM_DISCOVERY_TOKEN_CA_CERT_HASH}" && \
 echo ""
 
 SECONDS=0 && \
@@ -20,7 +20,7 @@ sudo kubeadm join "${CONTROL_PLANE_ENDPOINT}" \
   --discovery-token-ca-cert-hash "${KUBEADM_DISCOVERY_TOKEN_CA_CERT_HASH}" \
   --v 5 | tee "kubeadm-join.log" && \
 printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60)) && \
-./monitor-network-changes.sh
+./watch-for-interfaces-and-routes.sh
 
 sudo crictl pull nginx:1.18 && \
 sudo crictl pull nginx:1.19 && \

@@ -26,7 +26,7 @@ echo "KUBERNETES_BASE_VERSION....: ${KUBERNETES_BASE_VERSION}" && \
 echo ""
 
 # Watch Interfaces and Route information
-./monitor-network-changes.sh
+./watch-for-interfaces-and-routes.sh
 
 # Initialize master-1 (=~ 1 minute 30 seconds) - check: http://haproxy.example.com/stats
 SECONDS=0 && \
@@ -57,6 +57,7 @@ watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'
 kubectl apply -f weave-net-cni-plugin.yaml
 
 # Retrieve token information from log file
+KUBEADM_LOG_FILE="${HOME}/kubeadm-init.log" && \
 grep '\-\-certificate-key' "${KUBEADM_LOG_FILE}" --before 2 | grep \
   --only-matching \
   --extended-regexp '\-\-.*' | sed \
@@ -68,8 +69,10 @@ grep '\-\-certificate-key' "${KUBEADM_LOG_FILE}" --before 2 | grep \
     -e 's/ /=/' \
     -e 's/^/export KUBEADM_/'
 
+# Execute on master-2 and master-3 and on all workers
+
 # Watch Interfaces and Route information
-./monitor-network-changes.sh
+./watch-for-interfaces-and-routes.sh
 
 # Join Command
 NODE_NAME=$(hostname --short) && \
@@ -80,9 +83,11 @@ CONTROL_PLANE_ENDPOINT="${LOAD_BALANCER_NAME}:${LOAD_BALANCER_PORT}" && \
 CONTROL_PLANE_ENDPOINT_TEST=$(curl -Is ${LOAD_BALANCER_NAME}:${LOAD_BALANCER_PORT} &> /dev/null && echo "OK" || echo "FAIL") && \
 clear && \
 echo "" && \
-echo "NODE_NAME..................: ${NODE_NAME}" && \
-echo "LOCAL_IP_ADDRESS...........: ${LOCAL_IP_ADDRESS}" && \
-echo "CONTROL_PLANE_ENDPOINT.....: ${CONTROL_PLANE_ENDPOINT} [${CONTROL_PLANE_ENDPOINT_TEST}]" && \
+echo "NODE_NAME....................: ${NODE_NAME}" && \
+echo "LOCAL_IP_ADDRESS.............: ${LOCAL_IP_ADDRESS}" && \
+echo "CONTROL_PLANE_ENDPOINT.......: ${CONTROL_PLANE_ENDPOINT} [${CONTROL_PLANE_ENDPOINT_TEST}]" && \
+echo "TOKEN........................: ${KUBEADM_TOKEN}" && \
+echo "DISCOVERY_TOKEN_CA_CERT_HASH.: ${KUBEADM_DISCOVERY_TOKEN_CA_CERT_HASH}" && \
 echo ""
 
 sudo kubeadm join "${CONTROL_PLANE_ENDPOINT}" \
@@ -92,7 +97,8 @@ sudo kubeadm join "${CONTROL_PLANE_ENDPOINT}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
   --token "${KUBEADM_TOKEN}" \
   --discovery-token-ca-cert-hash "${KUBEADM_DISCOVERY_TOKEN_CA_CERT_HASH}" \
-  --certificate-key "${KUBEADM_CERTIFICATE_KEY}"
+  --certificate-key "${KUBEADM_CERTIFICATE_KEY}" && \
+./watch-for-interfaces-and-routes.sh
 
 # Monitoring during presentation (narrow screen space)
 cat <<EOF > namespace-info.sh
