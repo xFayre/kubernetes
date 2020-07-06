@@ -47,8 +47,6 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # Watch Nodes and Pods from kube-system namespace
-# [Presentation]
-# get nodes -o wide | sed "s/Ubuntu.*LTS/Ubuntu/g" | awk '{ print $1,$2,$5,$6,$10 }' | column -t
 watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'
 
 # Install CNI Plugin
@@ -59,10 +57,16 @@ watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'
 kubectl apply -f weave-net-cni-plugin.yaml
 
 # Retrieve token information from log file
-KUBEADM_LOG_FILE="${HOME}/kubeadm-init.log" && \
-grep "\-\-certificate-key" "${KUBEADM_LOG_FILE}" --before 2 | grep \
+grep '\-\-certificate-key' "${KUBEADM_LOG_FILE}" --before 2 | grep \
   --only-matching \
-  --extended-regexp "\-\-.*" | sed 's/\-\-control-plane //; s/^/  /'
+  --extended-regexp '\-\-.*' | sed \
+    -e 's/\-\-control-plane //' \
+    -e 's/^\-\-//' \
+    -e 's/ \\$//' \
+    -e 's/^.* /\U&/' \
+    -e 's/\-/_/g' \
+    -e 's/ /=/' \
+    -e 's/^/export KUBEADM_/'
 
 # Watch Interfaces and Route information
 ./monitor-network-changes.sh
@@ -86,9 +90,9 @@ sudo kubeadm join "${CONTROL_PLANE_ENDPOINT}" \
   --control-plane \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
-  --token huefvx.or8w2t52je2g80ut \
-  --discovery-token-ca-cert-hash sha256:3e847f8b6ba5833dabab55b1b89e2887e4e7a717ec81eeeaa69f7d57794f6e70 \
-  --certificate-key c5b2ce361012c1807a1f3fedd3d541916947156a883bed87d6df7333cce71803
+  --token "${KUBEADM_TOKEN}" \
+  --discovery-token-ca-cert-hash "${KUBEADM_DISCOVERY_TOKEN_CA_CERT_HASH}" \
+  --certificate-key "${KUBEADM_CERTIFICATE_KEY}"
 
 # Monitoring during presentation (narrow screen space)
 cat <<EOF > namespace-info.sh
