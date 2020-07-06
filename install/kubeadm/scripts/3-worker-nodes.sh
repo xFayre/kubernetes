@@ -18,13 +18,6 @@ sudo kubeadm join "${CONTROL_PLANE_ENDPOINT}" \
   --discovery-token-ca-cert-hash sha256:ca1979ab834f248f87ced5b312a7018a6a293b422a281cb89ac9ffcfa59145e9 \
   --v 5 | tee "kubeadm-join.log" && \
 printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60)) && \
-while true; do
-  ip -4 a | sed -e '/valid_lft/d' | awk '{ print $1, $2 }' | sed 'N;s/\n/ /' | tr -d ":" | awk '{ print $2, $4 }' | sort | sed '1iINTERFACE CIDR' | column -t && \
-  echo "" && \
-  route -n | sed /^Kernel/d | awk '{ print $1, $2, $3, $4, $5, $8 }' | column -t && echo "" && \
-  sleep 3 && \
-  clear
-done
 ./monitor-network-changes.sh
 
 sudo crictl pull nginx:1.18 && \
