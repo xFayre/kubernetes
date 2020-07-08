@@ -81,9 +81,9 @@ if grep --quiet "master" <<< $(hostname --short); then
 else
   sudo crictl pull "k8s.gcr.io/kube-proxy:v${KUBERNETES_IMAGE_VERSION}"
 fi
-clear
+printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60))
+SECONDS=0 && \
 grep "image:" "${WEAVE_NET_CNI_PLUGIN_FILE}" | awk -F "'" '{ print "sudo crictl pull " $2 }' | sh
-clear
 printf 'Elapsed time: %02d:%02d\n' $((${SECONDS} % 3600 / 60)) $((${SECONDS} % 60))
 
 # List Images
@@ -107,4 +107,8 @@ clear
 # Optional
 if grep --quiet "master" <<< $(hostname --short); then
   sudo crictl pull quay.io/jcmoraisjr/haproxy-ingress:latest
+else
+  sudo crictl pull nginx:1.18 && \
+  sudo crictl pull nginx:1.19 && \
+  sudo crictl pull yauritux/busybox-curl
 fi

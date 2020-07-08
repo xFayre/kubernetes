@@ -33,7 +33,7 @@ SECONDS=0 && \
 KUBEADM_LOG_FILE="${HOME}/kubeadm-init.log" && \
 NODE_NAME=$(hostname --short) && \
 sudo kubeadm init \
-  --v 3 \
+  --v 5 \
   --node-name "${NODE_NAME}" \
   --apiserver-advertise-address "${LOCAL_IP_ADDRESS}" \
   --kubernetes-version "${KUBERNETES_BASE_VERSION}" \
@@ -47,7 +47,7 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # Watch Nodes and Pods from kube-system namespace
-watch -n 3 'kubectl get nodes,pods,services -o wide -n kube-system'
+watch -n 3 'kubectl get nodes,daemonset,pods,services -o wide -n kube-system'
 
 # Install CNI Plugin
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#pod-network
@@ -70,6 +70,9 @@ grep '\-\-certificate-key' "${KUBEADM_LOG_FILE}" --before 2 | grep \
     -e 's/^/export KUBEADM_/'
 
 # Execute on master-2 and master-3 and on all workers
+export KUBEADM_TOKEN=fjoufv.d6w0epq4cbtuqh9m
+export KUBEADM_DISCOVERY_TOKEN_CA_CERT_HASH=sha256:8dd4b5b3e2e375f0914307af162151a22d736c13a6cccd5c39f49e7907ab64e2
+export KUBEADM_CERTIFICATE_KEY=e2d143ef995cb80286c4482d5278742d540b2fef33a558706581fa73efa77b2f
 
 # Watch Interfaces and Route information
 ./watch-for-interfaces-and-routes.sh
@@ -103,6 +106,8 @@ sudo kubeadm join "${CONTROL_PLANE_ENDPOINT}" \
 # Monitoring during presentation (narrow screen space)
 cat <<EOF > namespace-info.sh
 kubectl get nodes -o wide | sed "s/Ubuntu.*LTS/Ubuntu/g" | awk '{ print \$1,\$2,\$5,\$6,\$10 }' | column -t
+echo ""
+kubectl get ds -o wide | sed 's/NODE SELECTOR/NODE_SELECTOR/' | awk '{ print $1, $2, $3, $4, $5, $6, $7, $8, $9, $11 }' | column -t
 echo ""
 kubectl get cm,deploy -o wide
 echo ""
