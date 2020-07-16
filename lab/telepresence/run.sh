@@ -7,10 +7,8 @@ kubectl config set-context minikube --namespace dev
 eval $(minikube docker-env)
 
 docker pull datawire/hello-world
-
-watch -n 2 kubectl get deploy,cm,rs,pods,svc,ep -o wide
-
 docker pull datawire/telepresence-k8s:0.105-30-g8a9aa4e
+docker pull yauritux/busybox-curl
 
 cat <<EOF > headless-hello-service.yaml
 ---
@@ -34,3 +32,6 @@ subsets:
     ports:
       - port: 8000
 EOF
+
+watch -n 2 kubectl get deploy,cm,rs,pods,svc,ep -o wide
+
