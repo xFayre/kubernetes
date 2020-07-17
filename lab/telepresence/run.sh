@@ -1,6 +1,6 @@
 
 if grep --quiet "There is no local cluster named" <<< $(minikube status); then
-  minikube start
+  minikube start --driver=docker
 fi
 
 kubectl config use-context minikube

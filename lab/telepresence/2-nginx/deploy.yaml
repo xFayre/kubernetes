@@ -2,17 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: myserver
-  name: myserver
+    app: nginx
+  name: nginx
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: myserver
+      app: nginx
   template:
     metadata:
       labels:
-        app: myserver
+        app: nginx
     spec:
       containers:
       - image: datawire/telepresence-k8s:0.105
