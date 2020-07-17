@@ -1,12 +1,6 @@
 k run -it --image=yauritux/busybox-curl busybox
 
-docker run -d -p 8080:80 nginx:1.19
+docker run -d -p 80:80 nginx:1.19
 
-k apply -f deploy.yaml
-k apply -f service.yaml
+telepresence --swap-deployment nginx --expose 80 --run-shell
 
-telepresence --swap-deployment myserver --expose 8080 --run-shell
-
-k attach -it busybox
-
-curl -I myserver:8080
