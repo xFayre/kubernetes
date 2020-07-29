@@ -140,6 +140,7 @@ cat ../templates/kubeconfig.yaml | envsubst > "config.yaml"
 multipass transfer "${PWD}/config.yaml" "hal-9000:/home/ubuntu/config"
 
 cp ${HOME}/.minikube/ca.crt .
+
 multipass transfer "${PWD}/ca.crt" "hal-9000:/home/ubuntu/ca.crt"
 
 # Back to User Machine
