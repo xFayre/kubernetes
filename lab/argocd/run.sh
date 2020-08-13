@@ -15,8 +15,6 @@ kubectl config use-context minikube
 
 kubectl create namespace argocd
 
-TOTAL_ATTEMPTS=90
-
 for deploymentName in $(kubectl -n kube-system get deploy -o name); do
    echo "Waiting for: ${deploymentName}"
 
