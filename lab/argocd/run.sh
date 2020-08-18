@@ -70,7 +70,7 @@ argocd account update-password \
 kubectl create ns dev
 
 argocd app create nginx \
-  --repo https://github.com/smsilva/argocd.git \
+  --repo https://github.com/xFayre/argocd.git \
   --path nginx \
   --dest-server https://kubernetes.default.svc \
   --dest-namespace dev
